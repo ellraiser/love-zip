@@ -10,7 +10,7 @@ There were a couple existing Lua options but I was yet to find any that could su
 ## Usage
 Simply require the module in your game, some usage examples are shown below. See the API section further down for more details on each method. You can also run the `main.lua` file with LÖVE to see some basic examples in action.
 
-As this module uses the LÖVE filesystem, your file paths should be relative to [save directory](https://love2d.org/wiki/love.filesystem.getSaveDirectory) as they are passed directly to `love.filesystem.x`.
+As this module uses the LÖVE filesystem, your file paths should be relative to [save directory](https://love2d.org/wiki/love.filesystem.getSaveDirectory) or your project path as they are passed directly to `love.filesystem.x`.
 
 ```lua
 -- load the module
