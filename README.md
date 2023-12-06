@@ -1,5 +1,6 @@
 # löve-zip  
-Zero-dependency ZIP file compressor/decompressor module for use with [LÖVE](https://github.com/love2d/love).  
+Zero-dependency ZIP file compressor/decompressor module for use with [LÖVE](https://github.com/love2d/love).
+
 There were a couple existing Lua options but I was yet to find any that could support compressing/decompressing symlinks correctly without either making empty symlink files or duplicating the content, or without wiping the last modified date/time when decompressed by the OS.
 
 > This module is built to work with versions `11.X` and `12.X`
@@ -7,8 +8,7 @@ There were a couple existing Lua options but I was yet to find any that could su
 ---
 
 ## Usage
-Simply require the module in your game, some usage examples are shown below. See the API section further down for more details on each method.  
-You can also run the `main.lua` file with LÖVE to see some basic examples in action.
+Simply require the module in your game, some usage examples are shown below. See the API section further down for more details on each method. You can also run the `main.lua` file with LÖVE to see some basic examples in action.
 
 As this module uses the LÖVE filesystem, your file paths should be relative to [save directory](https://love2d.org/wiki/love.filesystem.getSaveDirectory) as they are passed directly to `love.filesystem.x`.
 
