@@ -54,7 +54,7 @@ love.zip = {
   -- @param {string} path - relative path to zip folder from LÖVE save directory
   -- @param {string} output - output path relative from LÖVE save directory
   -- @return {boolean,string} - returns true,nil if success, else returns false,error
-  decompress = function(self, path, output)
+  decompress = function(self, path, output, remapping)
 
     -- make sure we can read the zip first
     local content, err = love.filesystem.read(path)
@@ -124,6 +124,13 @@ love.zip = {
           compressed = filedata
         else
           compressed = love.data.decompress('string', 'deflate', filedata)
+        end
+      end
+
+      -- remap entries if needed
+      if remapping ~= nil then
+        for key, value in pairs(remapping) do
+          actualname = actualname:gsub(key, value)
         end
       end
 
@@ -309,14 +316,21 @@ love.zip = {
             local path = self:_resolveSymlink(love.filesystem.getSaveDirectory() .. '/' .. dir .. '/' .. files[f])
             local start_path = _folder .. files[f]
             local relative_path = path:gsub(love.filesystem.getSaveDirectory(), '')
-            local last_path = start_path:sub(start_path:find("/[^/]*$"), #start_path)
-            local lead_path = start_path:sub(1, start_path:find("/[^/]*$"))
-            local sym_path = relative_path:gsub(lead_path, '')
-            sym_path = sym_path:gsub(last_path, '')
-            sym_path = sym_path:gsub(_opath .. '/', '')
-            sym_path = sym_path:sub(2, #sym_path)
-            self:_log('adding sym: "' .._folder .. files[f] .. '"')
-            self:_add(_folder .. files[f], sym_path, 2716663808)
+            local regex_path = '/' .. _opath .. '/'
+            regex_path = regex_path:gsub('%-', '%%-')
+            regex_path = regex_path:gsub('%.', '%%.')
+            local sym_path = relative_path:gsub(regex_path, '')
+            if start_path:find("/[^/]*$") ~= nil then
+              local relative_folder = start_path:sub(1, start_path:find("/[^/]*$") - 1) .. '/'
+              relative_folder = relative_folder:gsub('%-', '%%-')
+              relative_folder = relative_folder:gsub('%.', '%%.')
+              sym_path = sym_path:gsub(relative_folder, '')
+            end
+            if sym_path:find('\n') then
+              sym_path = sym_path:gsub('\n', '')
+            end
+            self:_log('adding sym: "' .. start_path .. '" > "' .. sym_path .. '"')
+            self:_add(start_path, sym_path, 2716663808)
           end
         end
       end
