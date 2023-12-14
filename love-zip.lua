@@ -314,9 +314,13 @@ love.zip = {
           -- with a special attribute to flag it as a symlink on unix 
           elseif info.type == 'symlink' then
             local path = self:_resolveSymlink(love.filesystem.getSaveDirectory() .. '/' .. dir .. '/' .. files[f])
+            path = path:gsub('\\', '/')
             local start_path = _folder .. files[f]
-            local relative_path = path:gsub(love.filesystem.getSaveDirectory(), '')
+            start_path = start_path:gsub('\\', '/')
+            local relative_path = path:gsub(love.filesystem.getSaveDirectory():gsub('\\', '/'), '')
+            relative_path = relative_path:gsub('\\', '/')
             local regex_path = '/' .. _opath .. '/'
+            regex_path = regex_path:gsub('\\', '/')
             regex_path = regex_path:gsub('%-', '%%-')
             regex_path = regex_path:gsub('%.', '%%.')
             local sym_path = relative_path:gsub(regex_path, '')
