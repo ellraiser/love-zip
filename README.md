@@ -1,7 +1,7 @@
 # löve-zip  
 Zero-dependency ZIP file compressor/decompressor module for use with [LÖVE](https://github.com/love2d/love).
 
-There were a couple existing Lua options but I was yet to find any that could support compressing/decompressing symlinks correctly without either making empty symlink files or duplicating the content, or without wiping the last modified date/time when decompressed by the OS.
+There were a couple existing Lua options but I was yet to find any that could support compressing/decompressing symlinks on Windows correctly without either making empty symlink files or duplicating the content, or without wiping the last modified date/time when decompressed by the OS.
 
 > This module is built to work with versions `11.X` and `12.X`
 
@@ -45,7 +45,7 @@ assert(compress == true)
 ## Notes
 The module uses `os.execute()` to mark binary files as executable when decompressing if needed, as well as to resolve and create symlinks, if any.
 
-On Windows, `mklink` is used when decompressing symlinks to recreate the link, this means you will need to run the program as an administrator or you'll see the following error:  
+On Windows, `mklink` is used when decompressing UNIX symlinks to recreate the link, this means you will need to run the program as an administrator or you'll see the following error:  
 > You do not have sufficient privilege to perform this operation.
 
 ---
